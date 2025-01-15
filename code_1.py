@@ -39,6 +39,23 @@ def initialise(windowWidth, windowHeight, windowName, windowColour):
   pygame.display.set_caption(windowName)
   mySurface.fill(color=windowColour)
 
+def encrypt(text): #should i do this before the hashing or after the hashing?
+  coded = ''
+  for i in range(len(text)):
+    coded += chr(ord(text[i]) + 1)
+  return coded
+
+def hashing():
+  passw = encrypt(input("pass"))
+  hash = ''
+  for j in range(len(passw)):
+    if j < (len(passw)-1):
+      hash += chr((ord(passw[j]) + ord(passw[j+1]))*5)
+    else:
+      hash += chr((ord(passw[j]) + ord(passw[j-1]))*7)
+  print(hash)
+
+  
 def events():
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
@@ -61,7 +78,7 @@ up = True
 clicked = False
 
 initialise(width, height, caption, bgColour)
-buttonnp = buttonNextPage((255,255,255), (255,0,0), (50,50), "hi", "page", mySurface, font)
+buttonnp = buttonNextPage((255,255,255), (255,0,0), (50,50), "hash", "page", mySurface, font)
 while True:
   clicked = False
   render()
@@ -78,6 +95,7 @@ while True:
 #  print(up,down,clicked)
   if clicked:
     print("Clicked")
+    hashing()
   events()
   pygame.display.flip()
 
