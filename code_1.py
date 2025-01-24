@@ -11,6 +11,9 @@ bgColour = (22,19,36)
 emptyTextBoxColour = (38,32,54)
 emptyTextColour = (189,174,232)
 mySurface = None
+tablesize = 17
+
+table = [['','',0] for i in range(tablesize)]
 
 class buttonNextPage:
   def __init__(self, boxcolour, textcolour, coords, text, page, surface, font):
@@ -32,6 +35,20 @@ class buttonNextPage:
     buttonBase = pygame.Rect(self.coords[0],self.coords[1],140,40)
     pygame.draw.rect(self.surface,self.boxcolour,buttonBase)
 
+class textBox:
+  def __init__(self, boxcolour, textcolour, coords, page, surface, font, text):
+    self.boxcolour = boxcolour
+    self.textcolour = textcolour
+    self.coords = coords
+    self.page = page
+    self.surface = surface
+    self.font = font
+    self.text = text
+    
+  def drawButton(self):
+    buttonBase = pygame.Rect(self.coords[0],self.coords[1],140,40)
+    pygame.draw.rect(self.surface,self.boxcolour,buttonBase)
+
 def initialise(windowWidth, windowHeight, windowName, windowColour):
   global mySurface
   pygame.init()
@@ -45,15 +62,19 @@ def encrypt(text): #should i do this before the hashing or after the hashing?
     coded += chr(ord(text[i]) + 1)
   return coded
 
-def hashing():
+def msquare(tablesize): #exception handling: make it so you can't just enter, maybe have password length rules? if not make sure final index is at least 4 characters long
   passw = encrypt(input("pass"))
   hash = ''
-  for j in range(len(passw)):
-    if j < (len(passw)-1):
-      hash += chr((ord(passw[j]) + ord(passw[j+1]))*5)
-    else:
-      hash += chr((ord(passw[j]) + ord(passw[j-1]))*7)
+  square = ''
+  tableindex = 0
+  for j in passw:
+    hash += str(ord(j))
   print(hash)
+  square = str(int(hash) * int(hash))
+  square = square[len(square)//2:(len(square)//2)+4]
+  print(square)
+  tableindex = (int(square))%tablesize
+  print(hash, square, tableindex)
 
   
 def events():
@@ -61,6 +82,7 @@ def events():
       if event.type == pygame.QUIT:
         pygame.quit()
         sys.exit()
+      if event.type == pygame.KEY
 
 def render():
   buttonnp.drawButton()
@@ -95,7 +117,10 @@ while True:
 #  print(up,down,clicked)
   if clicked:
     print("Clicked")
-    hashing()
+    print(table)
+    msquare(tablesize)
   events()
   pygame.display.flip()
 
+#complete hash table
+#complete login
