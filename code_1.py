@@ -76,7 +76,6 @@ def msquare(tablesize): #exception handling: make it so you can't just enter, ma
   tableindex = (int(square))%tablesize
   print(hash, square, tableindex)
 
-  
 def events():
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
