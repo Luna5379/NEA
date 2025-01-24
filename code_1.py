@@ -81,7 +81,7 @@ def events():
       if event.type == pygame.QUIT:
         pygame.quit()
         sys.exit()
-      if event.type == pygame.KEY
+      #if event.type == pygame.KEY
 
 def render():
   buttonnp.drawButton()
