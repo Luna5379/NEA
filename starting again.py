@@ -265,10 +265,8 @@ def msquare(tablesize, text): #exception handling: make it so you can't just ent
   tableindex = 0
   for j in passw:
     hash += str(ord(j))
-  print(hash)
   square = str(int(hash) * int(hash))
   square = square[len(square)//2:(len(square)//2)+4]
-  print(square)
   tableindex = (int(square))%tablesize
   return(passw, square, tableindex)
 
