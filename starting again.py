@@ -14,6 +14,7 @@ caption = 'login'
 surface = screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 surface.fill(color=bgColour)
 pygame.display.set_caption(caption)
+text = ''
 fronty = [True, (119,73,248), (38,32,54), (85,24,214), (318,42), pygame.font.Font('din-next-rounded-lt-pro-bold.ttf', 18), 'SIGN UP']
 login1y = [False, (38,32,54), (189,174,232), (243,241,251), pygame.font.Font('Feather Bold.ttf', 32), 'Create your Profile', 'Email',
             'Password', 'Confirm Password', (45, 98), (62,173), (62, 243), (62, 313), 
@@ -24,8 +25,7 @@ login2y = [False, (38,32,54), (189,174,232), (243,241,251), pygame.font.Font('Fe
             pygame.font.Font('DIN Next Rounded LT W01 Regular.ttf', 22), (61,55,79), (298,47), '', '', '', '', '', False, False, False, False, False, False, False, False, False, False,
             False, False, False, False, False, (119,73,248), (38,32,54), (85,24,214), (318,42), pygame.font.Font('din-next-rounded-lt-pro-bold.ttf', 18), 'GET STARTED']
 
-def events():
-    text = ''
+def events(text):
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
         pygame.quit()
@@ -36,6 +36,7 @@ def events():
                 text = text[:-1]
         else:
             text += event.unicode
+    return text
     
 class buttonNextPage:
   def __init__(self, boxcolour, textcolour, coords, text, surface, font, boxshadcolour, width, buttonsize):
@@ -106,16 +107,6 @@ class textBox:
     buttonRect.topleft = (self.coords[0]-7.5, self.coords[1]+6)
     self.surface.blit(buttonText, buttonRect)
 
-  
-  def getText(self,text):
-    for event in pygame.event.get(): 
-      if event.type == pygame.KEYDOWN: 
-          if event.key == pygame.K_BACKSPACE: 
-              text = text[:-1] 
-          else: 
-              text += event.unicode
-    return text
-
   def drawOutline(self):
     buttonBase = pygame.Rect(self.coords[0]-17.25, self.coords[1]-7,self.buttonsize[0]+5,self.buttonsize[1]+5)
     pygame.draw.rect(self.surface,self.outline,buttonBase, border_radius = 5)
@@ -157,8 +148,6 @@ def login1():
     login1y[26] = False
     login1y[27] = False
   if login1y[22]:
-    if login1y[25]:
-      login1y[16] = l1b1.getText(login1y[16])
     l1b1.drawText(login1y[16])
   else:
     l1b1.drawText(login1y[6])
@@ -169,9 +158,10 @@ def login1():
     login1y[26] = True
     login1y[27] = False
   if login1y[23]:
-    if login1y[26]:
-      login1y[17] = l1b2.getText(login1y[17])
-    l1b2.drawText(login1y[17])
+    ps = ''
+    for i in range(len(login1y[17])):
+      ps += '*'
+    l1b2.drawText(ps)
   else:
     l1b2.drawText(login1y[7])
   login1y[21] = l1b3.checkClicked(l3b)
@@ -181,9 +171,10 @@ def login1():
     login1y[26] = False
     login1y[27] = True
   if login1y[24]:
-    if login1y[27]:
-      login1y[18] = l1b3.getText(login1y[18])
-    l1b3.drawText(login1y[18])
+    ps = ''
+    for i in range(len(login1y[18])):
+      ps += '*'
+    l1b3.drawText(ps)
   else:
     l1b3.drawText(login1y[8])
   startB = buttonNextPage(login1y[28], login1y[29],(52.5,387),login1y[33], surface, login1y[32],login1y[30], width, login1y[31])
@@ -215,15 +206,13 @@ def login2():
   l2b3 = textBox(login2y[1], login2y[2], login2y[14], surface, login2y[17], login2y[18], width, login2y[19])
   l2b3.drawOutline()
   l3b = l2b3.drawBox()
-  # login1y[19] = l2b1.checkClicked(l1b)
-  # if login1y[19]:
-  #   login1y[22] = True
-  #   login1y[25] = True
-  #   login1y[26] = False
-  #   login1y[27] = False
-  # if login1y[22]:
-  #   if login1y[25]:
-  #     login1y[16] = l2b1.getText(login1y[16])
+  # login2y[19] = l2b1.checkClicked(l1b)
+  # if login2y[19]:
+  #   login2y[22] = True
+  #   login2y[25] = True
+  #   login2y[26] = False
+  #   login2y[27] = False
+  # if login2y[22]:
   #   l2b1.drawText(login1y[16])
   # else:
   #   l2b1.drawText(login1y[6])
@@ -234,8 +223,6 @@ def login2():
   #   login1y[26] = True
   #   login1y[27] = False
   # if login1y[23]:
-  #   if login1y[26]:
-  #     login1y[17] = l2b2.getText(login1y[17])
   #   l2b2.drawText(login1y[17])
   # else:
   #   l2b2.drawText(login1y[7])
@@ -246,8 +233,6 @@ def login2():
   #   login1y[26] = False
   #   login1y[27] = True
   # if login1y[24]:
-  #   if login1y[27]:
-  #     login1y[18] = l2b3.getText(login1y[18])
   #   l2b3.drawText(login1y[18])
   # else:
   #   l2b3.drawText(login1y[8])
@@ -270,11 +255,23 @@ def msquare(tablesize, text): #exception handling: make it so you can't just ent
   tableindex = (int(square))%tablesize
   return(passw, square, tableindex)
 
-
 table = [['','',0] for i in range(tablesize)] #how can i make this save, do i store it in an sql table
 
 while True:
-    events()
+    if login1y[25]:
+      login1y[16] = events(login1y[16])
+    elif login1y[26]:
+      login1y[17] = events(login1y[17])
+    elif login1y[27]:
+      login1y[18] = events(login1y[18])
+    elif login2y[25]:
+      login2y[16] = events(login2y[16])
+    elif login2y[26]:
+      login2y[17] = events(login2y[17])
+    elif login2y[27]:
+      login2y[18] = events(login2y[18])
+    else:
+      text = events(text)
     if fronty[0]:
       fronty[0], login1y[0] = front()
     elif login1y[0]:
