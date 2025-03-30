@@ -1,11 +1,11 @@
+# login.py = login/sign up screens, Grade A skills: hash tables
+import csv
 import pygame
 import sys
 import sqlite3
-import sqlite3
 
-connection = sqlite3.connect('tablez.db')
-cursor = connection.cursor()
 pygame.init()
+first = True
 tablesize = 17
 width = 393
 height = 852
@@ -25,9 +25,29 @@ login2y = [False, (38,32,54), (189,174,232), (243,241,251), pygame.font.Font('Fe
             pygame.font.Font('DIN Next Rounded LT W01 Regular.ttf', 22), (61,55,79), (298,47), '', '', '', '', '', False, False, False, False, False, False, False, False, False, False,
             False, False, False, False, False, (119,73,248), (38,32,54), (85,24,214), (318,42), pygame.font.Font('din-next-rounded-lt-pro-bold.ttf', 18), 'GET STARTED']
 
+def hashTable(tablesize):
+  table = [[] for i in range(tablesize)]
+  tableCSV = open('hashes.csv', 'r')
+  csvReader = csv.reader(tableCSV, delimiter= ',')
+  for row in csvReader:
+     idx = row[0]
+     passy = row[1]
+     idx = int(idx)
+     table[idx] = [idx,passy]
+  tableCSV.close()
+  return table
+
 def events(text):
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
+        updateTable = open('hashes.csv', 'w', newline='')
+        tableWriter = csv.writer(updateTable, delimiter = ',')
+        for i in range(len(table)-1):
+          print(table[i])
+          if table[i] != []:
+            print("passed")
+            tableWriter.writerow(table[i])
+        updateTable.close()
         pygame.quit()
         sys.exit()
       elif event.type == pygame.KEYDOWN:
@@ -185,10 +205,11 @@ def login1():
   logo2 = False
   if logo1 == False and login1y[17] == login1y[18]:
     logo2 = True
-    cursor.execute("""INSERT INTO TABLEZ (Email, Name, UserName, Gender, DateOfBirth, PhoneNumber)
-               VALUES ('"""+str(login1y[16])+"""', '', '', '', date('0'), 0);""")
-    passw, hash, i = msquare(tablesize, login1y[17])
-    table[i] = [passw, hash, i]
+    # cursor.execute("""INSERT INTO TABLEZ (Email, Name, UserName, Gender, DateOfBirth, PhoneNumber)
+    #            VALUES ('"""+str(login1y[16])+"""', '', '', '', date('0'), 0);""")
+    passw, i = msquare(tablesize, login1y[17])
+    table[i] = [i, passw]
+    print(table[i])
   #elif login1y[17] != login1y[18]:
     #print("passwords do not match")
   return logo1, logo2
@@ -253,11 +274,12 @@ def msquare(tablesize, text): #exception handling: make it so you can't just ent
   square = str(int(hash) * int(hash))
   square = square[len(square)//2:(len(square)//2)+4]
   tableindex = (int(square))%tablesize
-  return(passw, square, tableindex)
-
-table = [['','',0] for i in range(tablesize)] #how can i make this save, do i store it in an sql table
+  return(passw, tableindex)
 
 while True:
+    if first:
+      table = hashTable(tablesize)
+      first = False
     if login1y[25]:
       login1y[16] = events(login1y[16])
     elif login1y[26]:
@@ -280,5 +302,5 @@ while True:
        login2()
        #cursor.execute("""SELECT * FROM TABLEZ ORDER BY Name DESC""") #just for testing x
        #print(cursor.fetchall())
-       connection.commit()
+       #connection.commit()
     pygame.display.flip()
