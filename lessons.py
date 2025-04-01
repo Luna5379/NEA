@@ -16,29 +16,34 @@ pygame.display.set_caption(caption)
 pygame.font.init()
 font = pygame.font.Font('Feather Bold.ttf', 32)
 
-class options:
-    def __init__(self, correct, option, surface, order,font):
+class q1:
+    def __init__(self, correct, option, surface, order):
         self.correct = correct
         self.option = option
         self.surface = surface
         self.order = order
-        self.font = font
+
+    def drawQuestion(self):
+        pass
+
+    def getOption(self):
+        pass
 
     def drawOption(self):
-        coords = [0,0]
+        coords = [0,120]
         if self.order % 2 == 0:
             coords[0] = 196.5
         if self.order > 2:
-            coords[1] = 30
-        optionBase = pygame.Rect(coords[0], coords[1],196.5,30)
+            coords[1] = 200
+        optionBase = pygame.Rect(coords[0], coords[1],196.5,80)
         pygame.draw.rect(self.surface,(255,255,255),optionBase, border_radius = 10)
-        buttonText = self.font.render(str(self.option), False, (0,0,0))
-        buttonRect = buttonText.get_rect()
-        buttonRect.topleft = (196.5/2 - self.font.size(self.option)[0]/2, coords[1]+(30+3.75-self.font.size(self.option)[1])/4)
-        self.surface.blit(buttonText, buttonRect)
-        #return optionBase
+        optionText = font.render(str(self.option), False, (0,0,0))
+        optionRect = optionText.get_rect()
+        optionRect.topleft = (196.5/2 + coords[0] - font.size(self.option)[0]/2, coords[1]+(30+3.75-font.size(self.option)[1])/4)
+        self.surface.blit(optionText, optionRect)
+        return optionBase
 
-    def optionResult():
+    def optionResult(option): #if option clicked, check option value, return correct/incorrect
         pass
 
 
@@ -76,14 +81,14 @@ def getAnswers(questionID):
 def question():
     surface.fill(color=bgColour)
     hi = "hi"
-    option1 = options(False, hi, surface, 1,font)
-    option1.drawOption()
-    option2 = options(False, hi, surface, 2,font)
-    option2.drawOption()
-    option3 = options(False, hi, surface, 3,font)
-    option3.drawOption()
-    option4 = options(False, hi, surface, 4,font)
-    option4.drawOption()
+    option1 = q1(False, hi, surface, 1)
+    o1 = option1.drawOption()
+    option2 = q1(False, hi, surface, 2)
+    o2 = option2.drawOption()
+    option3 = q1(False, hi, surface, 3)
+    o3 = option3.drawOption()
+    option4 = q1(False, hi, surface, 4)
+    o4 = option4.drawOption()
     pygame.display.flip()
     #startB = buttonNextPage(fronty[1], fronty[2],(52.5,725),fronty[6], surface, fronty[5],fronty[3], width, fronty[4])
     #bbs = startB.drawShadow()
