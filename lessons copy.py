@@ -16,6 +16,7 @@ surface.fill(color=bgColour)
 pygame.display.set_caption(caption)
 pygame.font.init()
 font = pygame.font.Font('Feather Bold.ttf', 16)
+selected = [False, False, False, False]
 
         # order = ['' for i in range(4)]
         # o = random.randint(1,4)
@@ -73,19 +74,14 @@ class q1: #first type, what does this command do?
             optionRect[i].topleft = (196.5/2 + coords[i][0] - font.size(allOpsOrdered[i])[0]/2, coords[i][1] + (100+3.75-font.size(allOpsOrdered[i])[1])/4)
             self.surface.blit(optionText[i], optionRect[i])
         return optionBase
-    def checkCorrect(self, optionBase): #check if the user clicked the right answer, show result
+    def selectOptions(self, optionBase, selected): #check if the user clicked the right answer, show result
         pos = pygame.mouse.get_pos()
-        if pygame.mouse.get_pressed()[0] and (optionBase[0].collidepoint(pos) or optionBase[1].collidepoint(pos) or optionBase[2].collidepoint(pos) or optionBase[3].collidepoint(pos)):
-            if optionBase[self.order[0]-1].collidepoint(pos):
-                correctText = font.render("correct", False, (0,255,0))
-            else:
-                correctText = font.render("incorrect", False, (255,0,0))
-            correctRect = correctText.get_rect()
-            correctRect.topleft = (0, 700)
-            self.surface.blit(correctText, correctRect)
-            return True
-        else:
-            return False
+        if pygame.mouse.get_pressed()[0] and (optionBase[0].collidepoint(pos) or optionBase[1].collidepoint(pos) or optionBase[2].collidepoint(pos) or optionBase[3].collidepoint(pos)) or (True in selected):
+            selectedShadow = pygame.Rect(coords[i][0],coords[i][1], 196.5, 100)
+            pygame.draw.rect(self.surface, (255,255,255), optionBase[i], border_radius = 10)
+            #return True
+        #else:
+            #return False
 class q2: #second type ...
     pass
 
@@ -97,14 +93,14 @@ def events():
 
 def question():
     surface.fill(color=bgColour)
-    while not qComplete: #add somewhere so that program works AFTER ADDING OTHER TYPES OF QUESTIONS
-        quest1 = q1(surface, (1,), [3,2,1,4])
-        q, ex = quest1.getQuestion()
-        quest1.drawQuestion(q,ex)
-        ans, ops = quest1.getOptions()
-        optionBase = quest1.drawOptions(ans,ops)
-        qComplete = quest1.checkCorrect(optionBase)
-        pygame.display.flip()
+    #while not qComplete: #add somewhere so that program works AFTER ADDING OTHER TYPES OF QUESTIONS
+    quest1 = q1(surface, (1,), [3,2,1,4])
+    q, ex = quest1.getQuestion()
+    quest1.drawQuestion(q,ex)
+    ans, ops = quest1.getOptions()
+    optionBase = quest1.drawOptions(ans,ops)
+    #quest1.checkCorrect(optionBase)
+    pygame.display.flip()
 while True:
     events()
     question()

@@ -5,6 +5,8 @@ import sys
 import sqlite3
 
 pygame.init()
+connection = sqlite3.connect('nea.db')
+cursor = connection.cursor()
 first = True
 tablesize = 17
 width = 393
@@ -16,11 +18,11 @@ surface.fill(color=bgColour)
 pygame.display.set_caption(caption)
 text = ''
 fronty = [True, (119,73,248), (38,32,54), (85,24,214), (318,42), pygame.font.Font('din-next-rounded-lt-pro-bold.ttf', 18), 'SIGN UP']
-login1y = [False, (38,32,54), (189,174,232), (243,241,251), pygame.font.Font('Feather Bold.ttf', 32), 'Create your Profile', 'Email',
+login1y = [False, (38,32,54), (189,174,232), (243,241,251), pygame.font.Font('Feather Bold.ttf', 32), 'Create your Profile', 'Username',
             'Password', 'Confirm Password', (45, 98), (62,173), (62, 243), (62, 313), 
             pygame.font.Font('DIN Next Rounded LT W01 Regular.ttf', 22), (61,55,79), (298,47), '', '', '', False, False, False, False, False, False,
             False, False, False, (119,73,248), (38,32,54), (85,24,214), (318,42), pygame.font.Font('din-next-rounded-lt-pro-bold.ttf', 18), 'CREATE ACCOUNT']
-login2y = [False, (38,32,54), (189,174,232), (243,241,251), pygame.font.Font('Feather Bold.ttf', 32), 'Fill in your details', 'Name', 'Username', 'Gender',
+login2y = [False, (38,32,54), (189,174,232), (243,241,251), pygame.font.Font('Feather Bold.ttf', 32), 'Fill in your details', 'Name', 'Email', 'Gender',
             'Date of Birth', 'Phone Number', (45, 98), (62,173), (62, 243), (62, 313), (62,383), (62,453),  
             pygame.font.Font('DIN Next Rounded LT W01 Regular.ttf', 22), (61,55,79), (298,47), '', '', '', '', '', False, False, False, False, False, False, False, False, False, False,
             False, False, False, False, False, (119,73,248), (38,32,54), (85,24,214), (318,42), pygame.font.Font('din-next-rounded-lt-pro-bold.ttf', 18), 'GET STARTED']
@@ -114,7 +116,7 @@ class textBox:
     self.font = font
     self.outline = outline
     self.width = width
-    self.buttonsize = buttonsize
+    self.buttonsize = (298,47)
   
   def drawBox(self):
     buttonBase = pygame.Rect(self.coords[0]-15, self.coords[1]-3.75,self.buttonsize[0],self.buttonsize[1])
@@ -149,25 +151,25 @@ def front():
    return fronto, logo1
 
 def login1():
-  surface.fill(color=bgColour)
-  l1h = heading(surface, login1y[4], login1y[5], login1y[3], login1y[9])
-  l1h.drawText()
-  l1b1 = textBox(login1y[1], login1y[2], login1y[10], surface, login1y[13], login1y[14], width, login1y[15])
-  l1b1.drawOutline()
-  l1b = l1b1.drawBox()
-  l1b2 = textBox(login1y[1], login1y[2], login1y[11], surface, login1y[13], login1y[14], width, login1y[15])
+  surface.fill(color=bgColour) #fill surface so that the background is the right colour
+  l1h = heading(surface, login1y[4], login1y[5], login1y[3], login1y[9]) #make a heading, surface, font, text, colour, coords
+  l1h.drawText() #draw the heading
+  l1b1 = textBox(login1y[1], login1y[2], login1y[10], surface, login1y[13], login1y[14], width, login1y[15]) #make a textbox, boxColour, colour, coords, surface, font, outline, width, buttonsize
+  l1b1.drawOutline() #draw outline of textbox
+  l1b = l1b1.drawBox() #draw textbox on top and return it for clicking
+  l1b2 = textBox(login1y[1], login1y[2], login1y[11], surface, login1y[13], login1y[14], width, login1y[15]) #coords lower
   l1b2.drawOutline()
   l2b = l1b2.drawBox()
-  l1b3 = textBox(login1y[1], login1y[2], login1y[12], surface, login1y[13], login1y[14], width, login1y[15])
+  l1b3 = textBox(login1y[1], login1y[2], login1y[12], surface, login1y[13], login1y[14], width, login1y[15]) #coords lower
   l1b3.drawOutline()
   l3b = l1b3.drawBox()
-  login1y[19] = l1b1.checkClicked(l1b)
-  if login1y[19]:
-    login1y[22] = True
+  login1y[19] = l1b1.checkClicked(l1b) #check first box is clicked, gives true or false if it is clicked
+  if login1y[19]: #if its clicked
+    login1y[22] = True #typing can happen
     login1y[25] = True
-    login1y[26] = False
+    #login1y[26] = False
     login1y[27] = False
-  if login1y[22]:
+  if login1y[22]: #typing is happening
     l1b1.drawText(login1y[16])
   else:
     l1b1.drawText(login1y[6])
@@ -205,20 +207,23 @@ def login1():
   logo2 = False
   if logo1 == False and login1y[17] == login1y[18]:
     logo2 = True
-    # cursor.execute("""INSERT INTO TABLEZ (Email, Name, UserName, Gender, DateOfBirth, PhoneNumber)
-    #            VALUES ('"""+str(login1y[16])+"""', '', '', '', date('0'), 0);""")
     passw, i = msquare(tablesize, login1y[17])
     table[i] = [i, passw]
     print(table[i])
-  #elif login1y[17] != login1y[18]:
-    #print("passwords do not match")
+    params = [str(login1y[16]),None,None,None,None,None,i]
+    cursor.execute("""INSERT INTO profile (UserName, Email, Name, Gender, DateOfBirth, Phone, Hash)
+                   VALUES (?,?,?,?,?,?,?)""",params)
   return logo1, logo2
 
 def login2():
+  login1y[24] = False
+  login1y[25] = False
+  login1y[26] = False
+  login1y[27] = False
   surface.fill(color=bgColour)
   l2h = heading(surface, login2y[4], login2y[5], login2y[3], login2y[11])
   l2h.drawText()
-  l2b1 = textBox(login2y[1], login2y[2], login2y[12], surface, login2y[17], login2y[18], width, login2y[19])
+  l2b1 = textBox(login2y[1], login2y[2], login2y[12], surface, login2y[17], login2y[18], width, login2y[19]) #boxColour, colour, coords, surface, font, outline, width, buttonsize
   l2b1.drawOutline()
   l1b = l2b1.drawBox()
   l2b2 = textBox(login2y[1], login2y[2], login2y[13], surface, login2y[17], login2y[18], width, login2y[19])
@@ -227,36 +232,36 @@ def login2():
   l2b3 = textBox(login2y[1], login2y[2], login2y[14], surface, login2y[17], login2y[18], width, login2y[19])
   l2b3.drawOutline()
   l3b = l2b3.drawBox()
-  # login2y[19] = l2b1.checkClicked(l1b)
-  # if login2y[19]:
-  #   login2y[22] = True
-  #   login2y[25] = True
-  #   login2y[26] = False
-  #   login2y[27] = False
-  # if login2y[22]:
-  #   l2b1.drawText(login1y[16])
-  # else:
-  #   l2b1.drawText(login1y[6])
-  # login1y[20] = l2b2.checkClicked(l2b)
-  # if login1y[20]:
-  #   login1y[23] = True
-  #   login1y[25] = False
-  #   login1y[26] = True
-  #   login1y[27] = False
-  # if login1y[23]:
-  #   l2b2.drawText(login1y[17])
-  # else:
-  #   l2b2.drawText(login1y[7])
-  # login1y[21] = l2b3.checkClicked(l3b)
-  # if login1y[21]:
-  #   login1y[24] = True
-  #   login1y[25] = False
-  #   login1y[26] = False
-  #   login1y[27] = True
-  # if login1y[24]:
-  #   l2b3.drawText(login1y[18])
-  # else:
-  #   l2b3.drawText(login1y[8])
+  login2y[25] = l2b1.checkClicked(l1b)
+  if login2y[25]:
+    login2y[22] = True
+    login2y[25] = True
+    login2y[26] = False
+    login2y[27] = False
+  if login2y[22]:
+    l2b1.drawText(login2y[20])
+  else:
+    l2b1.drawText(login2y[6])
+  login2y[26] = l2b2.checkClicked(l2b)
+  if login2y[26]:
+    login2y[23] = True
+    login2y[25] = False
+    login2y[26] = True
+    login2y[27] = False
+  if login1y[23]:
+    l2b2.drawText(login2y[21])
+  else:
+    l2b2.drawText(login2y[7])
+  login1y[27] = l2b3.checkClicked(l3b)
+  if login1y[27]:
+    login1y[24] = True
+    login1y[25] = False
+    login1y[26] = False
+    login1y[27] = True
+  if login1y[24]:
+    l2b3.drawText(login2y[22])
+  else:
+    l2b3.drawText(login2y[8])
 
 def encrypt(text): #should i do this before the hashing or after the hashing?
   coded = ''
@@ -287,11 +292,11 @@ while True:
     elif login1y[27]:
       login1y[18] = events(login1y[18])
     elif login2y[25]:
-      login2y[16] = events(login2y[16])
+      login2y[20] = events(login2y[20])
     elif login2y[26]:
-      login2y[17] = events(login2y[17])
+      login2y[21] = events(login2y[21])
     elif login2y[27]:
-      login2y[18] = events(login2y[18])
+      login2y[22] = events(login2y[22])
     else:
       text = events(text)
     if fronty[0]:
@@ -304,3 +309,4 @@ while True:
        #print(cursor.fetchall())
        #connection.commit()
     pygame.display.flip()
+    connection.commit()
