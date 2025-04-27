@@ -1,0 +1,100 @@
+QuestionID,Question,Answer,Difficulty,LessonPercentage,Example,Topic,Section
+2,"""What does '#' do?""","""Allows comments to be written""",1,0.05,"""#This line prints something""",Basics,Simple Commands
+3,"""What does the 'input(x)' command do?""","""Outputs x and allows the user to input data""",1,0.05,"""input('What is your name?')""",Basics,Simple Commands
+4,"""What does 'x = y' do?""","""Assigns the value 'y' to the variable 'x'""",1,0.05,"""colour = orange""",Basics,Simple Commands
+5,"""What does 'str(x)' do?""","""Casts the value in the variable x to a string data type""",2,0.1,"""str(variable)""",Basics,Simple Commands
+6,"""What does 'int(x)' do?""","""Casts the value in the variable x to an integer data type""",2,0.1,"""int(variable)""",Basics,Simple Commands
+7,"""What does 'float(x)' do?""","""Casts the value in the variable x to a float data type""",2,0.2,"""float(variable)""",Basics,Simple Commands
+8,"""What does 'type(x)' do?""","""Outputs the data type of the variable x""",2,0.2,"""type(variable)""",Basics,Simple Commands
+9,"""What does 'x + y' do if both x and y are integers?""","""Sums the values x and y""",2,0.1,"""5 + 3""",Basics,Simple Commands
+10,"""What does 'x + y' do if both x and y are strings?""","""Concatenates the strings in x and y""",3,0.4,"""x + y""",Basics,Simple Commands
+11,"""What does 'x <= y' do?""","""Returns true if the value of x is less than or equal to the value of y,  otherwise returning false""",2,0.2,"""5 <= 6""",Basics,Simple Commands
+12,"""What does 'x >= y' do?""","""Returns true if the value of x is greater than or equal to the value of y,  otherwise returning false""",2,0.2,"""x >= y""",Basics,Simple Commands
+13,"""What does 'complex(x)' do?""","""Casts the value in the variable x to a complex data type""",3,0.4,"""complex(variable)""",Basics,Simple Commands
+14,"""What does 'len(x)' do?""","""Gets the length of the value in the variable x""",2,0.2,"""len(variable)""",Basics,Simple Commands
+15,"""What does 'in' do?""","""Checks if a certain value is present in another value""",2,0.2,"""x in y""",Basics,Simple Commands
+16,"""What does 'not in' do?""","""Checks if a certain value is not present in another value""",2,0.2,"""x not in y""",Basics,Simple Commands
+17,"""What does 'x.upper()' do?""","""Converts the value in x to all uppercase""",3,0.3,"""x.upper()""",Basics,Simple Commands
+18,"""What does 'x.lower()' do?""","""Converts the value in x to all lowercase""",3,0.3,"""x.lower()""",Basics,Simple Commands
+19,"""What does '\' do?""","""It is the escape character, allowing for illegal characters to be used in a string""",4,0.5,"""\'""",Basics,Simple Commands
+20,"""What does 'x > y' do?""","""Returns true if the value of x is greater than the value of y,  otherwise returning false""",2,0.1,"""x > y""",Basics,Simple Commands
+21,"""What does 'x == y' do?""","""Returns true if the value of x is equal to the value of y,  otherwise returning false""",2,0.1,"""x == y""",Basics,Simple Commands
+22,"""What does 'x < y' do?""","""Returns true is the value of x is less than the value of y, otherwise returning false""",2,0.1,"""3 < 7""",Basics,Simple Commands
+23,"""What does 'bool(x)' do?""","""Evaluates the value of x, returning True or False""",2,0.2,"""bool(variable)""",Basics,Simple Commands
+24,"""What does 'x != y' do?""","""Returns true if the value of x is not equal to the value of y,  otherwise returning false""",2,0.1,"""x != y""",Basics,Simple Commands
+25,"""What does 'x - y' do if both x and y are integers?""","""Subtracts the value y from x""",2,0.1,"""5 - 3""",Basics,Simple Commands
+26,"""What does 'x * y' do if both x and y are integers?""","""Multiplies the values x and y""",2,0.1,"""6 * 4""",Basics,Simple Commands
+27,"""What does 'x / y' do if both x and y are integers?""","""Divides the value x by y""",2,0.1,"""6 / 3""",Basics,Simple Commands
+28,"""What does 'x % y' do if both x and y are integers?""","""Calculates the modulus of the value x by y""",3,0.3,"""8 % 2""",Basics,Simple Commands
+29,"""What does 'x ** y' do if both x and y are integers?""","""Raises the value x to the power of y""",3,0.3,"""9 ** 2""",Basics,Simple Commands
+30,"""What does 'x // y' do if both x and y are integers?""","""Finds the remainder of dividing the value x by y""",4,0.5,""" 10 // 4""",Basics,Simple Commands
+31,"""What does 'import x' do?""","""Imports the library 'x' for use in your file""",,,,Intermediate,Simple Commands
+32,"""What does 'global x' do?""","""Creates a global variable inside a function""",,,,Intermediate,Simple Commands
+33,"""What does 'isinstance(x, type)' do?""","""Evaluates whether the value of x is the data type 'type', returing True or False""",,,,Intermediate,Simple Commands
+34,"""What does 'f""y {x}""' do?""","""Formats the string to be 'y (value of x)'""",,,,Intermediate,Simple Commands
+35,,,,,,Intermediate,Simple Commands
+36,,,,,,Intermediate,Simple Commands
+37,,,,,,Intermediate,Simple Commands
+38,,,,,,Intermediate,Simple Commands
+39,,,,,,Intermediate,Simple Commands
+40,,,,,,Intermediate,Simple Commands
+41,,,,,,,Simple Commands
+42,,,,,,,Simple Commands
+43,,,,,,,Simple Commands
+44,,,,,,,Simple Commands
+45,,,,,,,Simple Commands
+46,,,,,,,Simple Commands
+47,,,,,,,Simple Commands
+48,,,,,,,Simple Commands
+49,,,,,,,Simple Commands
+50,,,,,,,Simple Commands
+51,,,,,,,
+52,,,,,,,
+53,,,,,,,
+54,,,,,,,
+55,,,,,,,
+56,,,,,,,
+57,,,,,,,
+58,,,,,,,
+59,,,,,,,
+60,,,,,,,
+61,,,,,,,
+62,,,,,,,
+63,,,,,,,
+64,,,,,,,
+65,,,,,,,
+66,,,,,,,
+67,,,,,,,
+68,,,,,,,
+69,,,,,,,
+70,,,,,,,
+71,,,,,,,
+72,,,,,,,
+73,,,,,,,
+74,,,,,,,
+75,,,,,,,
+76,,,,,,,
+77,,,,,,,
+78,,,,,,,
+79,,,,,,,
+80,,,,,,,
+81,,,,,,,
+82,,,,,,,
+83,,,,,,,
+84,,,,,,,
+85,,,,,,,
+86,,,,,,,
+87,,,,,,,
+88,,,,,,,
+89,,,,,,,
+90,,,,,,,
+91,,,,,,,
+92,,,,,,,
+93,,,,,,,
+94,,,,,,,
+95,,,,,,,
+96,,,,,,,
+97,,,,,,,
+98,,,,,,,
+99,,,,,,,
+100,,,,,,,

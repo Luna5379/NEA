@@ -1,4 +1,4 @@
-# login.py = login/sign up screens, Grade A skills: hash tables
+# signup.py = login/sign up screens, Grade A skills: hash tables
 import csv
 import pygame
 import sys
@@ -12,11 +12,12 @@ tablesize = 151
 width = 393
 height = 852
 bgColour = (22,19,36)
-caption = 'login'
+caption = 'signup'
 surface = screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 surface.fill(color=bgColour)
 pygame.display.set_caption(caption)
 text = ''
+hashInterval = 3
 fronty = [True, (119,73,248), (38,32,54), (85,24,214), (318,42), pygame.font.Font('din-next-rounded-lt-pro-bold.ttf', 18), 'SIGN UP']
 textBools = {
   "getTextl11" : False,
@@ -53,24 +54,17 @@ typeCheck = {
 }
 pageBools = {
    "front" : True,
-   "login1" : False,
-   "login2" : False,
+   "signup1" : False,
+   "signup2" : False,
    "teacherPage" : True,
-   "studentPage" : True
+   "studentPage" : True,
+   "login" : False
 }
 
 popUps = {
    "student" : False,
    "teacher" : False
 }
-# , (38,32,54), (189,174,232), (243,241,251), pygame.font.Font('Feather Bold.ttf', 32), 'Create your Profile', 'Username',
-            #'Password', 'Confirm Password', (45, 98), (62,173), (62, 243), (62, 313), 
-            #pygame.font.Font('DIN Next Rounded LT W01 Regular.ttf', 22), (61,55,79), (298,47), '', '', '', False, False, False, False, False, False,
-            #False, False, False, (119,73,248), (38,32,54), (85,24,214), (318,42), pygame.font.Font('din-next-rounded-lt-pro-bold.ttf', 18), 'CREATE ACCOUNT']
-login2y = [False, (38,32,54), (189,174,232), (243,241,251), pygame.font.Font('Feather Bold.ttf', 32), 'Fill in your details', 'Name', 'Email', 'Gender',
-            'Date of Birth', 'Phone Number', (45, 98), (62,173), (62, 243), (62, 313), (62,383), (62,453),  
-            pygame.font.Font('DIN Next Rounded LT W01 Regular.ttf', 22), (61,55,79), (298,47), '', '', '', '', '', False, False, False, False, False, False, False, False, False, False,
-            False, False, False, False, False, (119,73,248), (38,32,54), (85,24,214), (318,42), pygame.font.Font('din-next-rounded-lt-pro-bold.ttf', 18), 'GET STARTED']
 
 def hashTable(tablesize):
   table = [[] for i in range(tablesize)]
@@ -83,6 +77,18 @@ def hashTable(tablesize):
      table[idx] = [idx,passy]
   tableCSV.close()
   return table
+
+def hashStore(passw, i):
+   if table[i] == []:
+      table[i] = [i, passw]
+   else:
+      while table[i] != []:
+         print("yay")
+         i += hashInterval
+         if i > tablesize:
+            i = i % tablesize
+      table[i] = [i, passw]
+   return i
 
 def events(text):
     for event in pygame.event.get():
@@ -250,17 +256,28 @@ class popUp:
        pass
 def front():
    surface.fill(color=bgColour)
-   startB = buttonNextPage(fronty[1], fronty[2],(52.5,725),fronty[6], surface, fronty[5],fronty[3], width, fronty[4])
+   startB = buttonNextPage(fronty[1], fronty[2],(52.5,665),fronty[6], surface, fronty[5],fronty[3], width, fronty[4])
    bbs = startB.drawShadow()
    bb = startB.drawButton()
    startB.drawText()
-   fronto = startB.checkClicked(bb,bbs)
+   logB = buttonNextPage(fronty[1], fronty[2],(52.5,725),'LOG IN', surface, fronty[5],fronty[3], width, fronty[4])
+   lbs = logB.drawShadow()
+   lb = logB.drawButton()
+   logB.drawText()
+   fronto1 = startB.checkClicked(bb,bbs)
+   fronto2 = logB.checkClicked(lb,lbs)
+   signo1 = False
    logo1 = False
-   if fronto == False:
+   if fronto1 == False:
+      signo1 = True
+      return fronto1, signo1, logo1
+   elif fronto2 == False:
       logo1 = True
-   return fronto, logo1
+      return fronto2, signo1, logo1
+   else:
+      return True, signo1, logo1
 
-def login1():
+def signup1():
    surface.fill(color=bgColour)
    l1h = heading(surface, pygame.font.Font('Feather Bold.ttf', 32), 'Create your profile', (243,241,251), (45,98))
    l1h.drawText()
@@ -318,14 +335,14 @@ def login1():
    logo2 = False
    if logo1 == False and textStrings['textl12'] == textStrings['textl13']:
       logo2 = True
-      passw, i = msquare(tablesize, textStrings['textl12'])
-      table[i] = [i, passw]
+      passw, i = msquare(tablesize, textStrings['textl12']) # COLLISIONS
+      i = hashStore(passw, i)
       params = [str(textStrings['textl11']),None,None,None,None,None,i,None,None]#try except for exception handling usernames must be different
       cursor.execute("""INSERT INTO profile
                     VALUES (?,?,?,?,?,?,?,?,?)""",params)
    return logo1, logo2
 
-def login2():
+def signup2():
     textBools['getTextl11'] = False
     textBools['getTextl12'] = False
     textBools['getTextl13'] = False
@@ -419,7 +436,10 @@ def login2():
     if popUps['teacher']:
        cursor.execute("""SELECT MAX(ClassroomCode) FROM profile WHERE Teacher = 1""") #where teacher = 1 can be removed when exceptions are handled
        codey = cursor.fetchone()
-       codeInt = codey[0] +1
+       if codey[0] == None:
+          codeInt = 0
+       else:
+        codeInt = codey[0] +1
        code = str(codeInt)
        while len(code) < 4:
           code = '0' + code
@@ -523,11 +543,11 @@ while True:
         textStrings['ctext'] = events(textStrings['ctext'])
     else:
         text = events(text)
-    # if pageBools['front']:
-    #     pageBools['front'], pageBools['login1'] = front()
-    # elif pageBools['login1']:
-    #     pageBools['login1'], pageBools['login2'] = login1()
-    # elif pageBools['login2']:
-    pageBools['login2'], pageBools['teacherPage'], pageBools['studentPage'] = login2()
+    if pageBools['front']:
+        pageBools['front'], pageBools['signup1'], pageBools['login'] = front()
+    elif pageBools['signup1']:
+        pageBools['signup1'], pageBools['signup2'] = signup1()
+    elif pageBools['signup2']:
+      pageBools['signup2'], pageBools['teacherPage'], pageBools['studentPage'] = signup2()
     pygame.display.flip()
     connection.commit()
